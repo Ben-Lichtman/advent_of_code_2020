@@ -1,6 +1,16 @@
 use std::fs::read_to_string;
 
-const INPUT_FILE: &str = "input/day1/1.txt";
+fn parse_input(file: &str) -> Vec<u32> {
+	let input = read_to_string(file).unwrap();
+
+	let mut nums = input
+		.lines()
+		.map(|l| l.parse::<u32>().unwrap())
+		.collect::<Vec<_>>();
+
+	nums.sort_unstable();
+	nums
+}
 
 fn find_pair(nums: &[u32], target: u32) -> Option<(u32, u32)> {
 	let mut min = 0;
@@ -19,14 +29,7 @@ fn find_pair(nums: &[u32], target: u32) -> Option<(u32, u32)> {
 }
 
 fn main() {
-	let input = read_to_string(INPUT_FILE).unwrap();
-
-	let mut nums = input
-		.lines()
-		.map(|l| l.parse::<u32>().unwrap())
-		.collect::<Vec<_>>();
-
-	nums.sort_unstable();
+	let nums = parse_input("input/day1/1.txt");
 
 	let (a, b) = find_pair(&nums, 2020).unwrap();
 
