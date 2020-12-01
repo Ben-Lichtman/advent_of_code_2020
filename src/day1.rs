@@ -13,14 +13,10 @@ fn find_pair(nums: &[u32], target: u32) -> Option<(u32, u32)> {
 
 		let sum = nums[min] + nums[max];
 
-		if sum > target {
-			max -= 1;
-		}
-		else if sum < target {
-			min += 1;
-		}
-		else {
-			break Some((nums[min], nums[max]));
+		match sum {
+			x if x > target => max -= 1,
+			x if x < target => min += 1,
+			_ => break Some((nums[min], nums[max])),
 		}
 	}
 }
@@ -40,12 +36,9 @@ fn main() {
 	println!("Part 1: {}", a * b);
 
 	for a in nums.iter() {
-		match find_pair(&nums, 2020 - a) {
-			Some((b, c)) => {
-				println!("Part 2: {}", a * b * c);
-				break;
-			}
-			None => (),
+		if let Some((b, c)) = find_pair(&nums, 2020 - a) {
+			println!("Part 2: {}", a * b * c);
+			break;
 		}
 	}
 }
