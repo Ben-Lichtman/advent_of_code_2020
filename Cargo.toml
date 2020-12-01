@@ -5,6 +5,7 @@ authors = ["Ben-Lichtman"]
 edition = "2018"
 
 [dependencies]
+itertools = "0.9.0"
 
 [[bin]]
 name = "day1"
