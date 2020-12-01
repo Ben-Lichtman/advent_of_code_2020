@@ -6,19 +6,16 @@ fn find_pair(nums: &[u32], target: u32) -> Option<(u32, u32)> {
 	let mut min = 0;
 	let mut max = nums.len() - 1;
 
-	loop {
-		if min == max {
-			break None;
-		}
-
+	while min != max {
 		let sum = nums[min] + nums[max];
 
 		match sum {
 			x if x > target => max -= 1,
 			x if x < target => min += 1,
-			_ => break Some((nums[min], nums[max])),
+			_ => return Some((nums[min], nums[max])),
 		}
 	}
+	None
 }
 
 fn main() {
