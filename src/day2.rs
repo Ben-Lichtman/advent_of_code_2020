@@ -1,7 +1,9 @@
-use regex::Regex;
+use parse_display::FromStr;
 
 use std::fs::read_to_string;
 
+#[derive(FromStr)]
+#[display(r"{num_a}-{num_b} {c}: {pw}")]
 struct Password {
 	num_a: u32,
 	num_b: u32,
@@ -25,23 +27,9 @@ impl Password {
 fn parse_input(file: &str) -> Vec<Password> {
 	let input = read_to_string(file).unwrap();
 
-	let re = Regex::new(r"(\d+)-(\d+) (\w): (\w+)").unwrap();
-
 	let processed = input
 		.lines()
-		.map(|l| {
-			let caps = re.captures(l).unwrap();
-			let num_a = caps[1].parse().unwrap();
-			let num_b = caps[2].parse().unwrap();
-			let c = caps[3].chars().next().unwrap();
-			let pw = String::from(&caps[4]);
-			Password {
-				num_a,
-				num_b,
-				c,
-				pw,
-			}
-		})
+		.map(|l| l.parse::<Password>().unwrap())
 		.collect::<Vec<_>>();
 
 	processed
