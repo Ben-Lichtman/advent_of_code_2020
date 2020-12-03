@@ -29,8 +29,6 @@ fn check_slope(trees: &[Vec<bool>], slope: (usize, usize)) -> u32 {
 fn main() {
 	let trees = parse_input("input/day3/1.txt");
 
-	// dbg!(&trees);
-
 	let count = check_slope(&trees, (3, 1));
 
 	println!("Part 1: {}", count);
