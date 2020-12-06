@@ -10,6 +10,58 @@ use nom::{
 
 use std::{fs::read_to_string, str::FromStr};
 
+#[derive(Debug)]
+enum Height {
+	Cm(u32),
+	Inch(u32),
+}
+
+#[derive(Debug)]
+enum EyeColour {
+	Amb,
+	Blu,
+	Brn,
+	Gry,
+	Grn,
+	Hzl,
+	Oth,
+}
+
+#[derive(Debug)]
+struct Passport {
+	// (Birth Year)
+	byr: u32,
+	// (Issue Year)
+	iyr: u32,
+	// (Expiration Year)
+	eyr: u32,
+	// (Height)
+	hgt: Height,
+	// (Hair Color)
+	hcl: String,
+	// (Eye Color)
+	ecl: EyeColour,
+	// (Passport ID)
+	pid: String,
+	// (Country ID)
+	cid: Option<String>,
+}
+
+impl Passport {
+	fn validate_2(&self) -> bool {
+		1920 <= self.byr
+			&& self.byr <= 2002
+			&& 2010 <= self.iyr
+			&& self.iyr <= 2020
+			&& 2020 <= self.eyr
+			&& self.eyr <= 2030
+			&& match self.hgt {
+				Height::Cm(h) => 150 <= h && h <= 193,
+				Height::Inch(h) => 59 <= h && h <= 76,
+			}
+	}
+}
+
 pub fn parse_integer<T>(input: &str) -> IResult<&str, T>
 where
 	T: FromStr,
@@ -160,56 +212,4 @@ fn main() {
 		.count();
 
 	println!("Part 2: {}", count_2);
-}
-
-#[derive(Debug)]
-enum Height {
-	Cm(u32),
-	Inch(u32),
-}
-
-#[derive(Debug)]
-enum EyeColour {
-	Amb,
-	Blu,
-	Brn,
-	Gry,
-	Grn,
-	Hzl,
-	Oth,
-}
-
-#[derive(Debug)]
-struct Passport {
-	// (Birth Year)
-	byr: u32,
-	// (Issue Year)
-	iyr: u32,
-	// (Expiration Year)
-	eyr: u32,
-	// (Height)
-	hgt: Height,
-	// (Hair Color)
-	hcl: String,
-	// (Eye Color)
-	ecl: EyeColour,
-	// (Passport ID)
-	pid: String,
-	// (Country ID)
-	cid: Option<String>,
-}
-
-impl Passport {
-	fn validate_2(&self) -> bool {
-		1920 <= self.byr
-			&& self.byr <= 2002
-			&& 2010 <= self.iyr
-			&& self.iyr <= 2020
-			&& 2020 <= self.eyr
-			&& self.eyr <= 2030
-			&& match self.hgt {
-				Height::Cm(h) => 150 <= h && h <= 193,
-				Height::Inch(h) => 59 <= h && h <= 76,
-			}
-	}
 }
