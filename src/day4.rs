@@ -62,7 +62,7 @@ impl Passport {
 	}
 }
 
-pub fn parse_integer<T>(input: &str) -> IResult<&str, T>
+fn parse_integer<T>(input: &str) -> IResult<&str, T>
 where
 	T: FromStr,
 {
