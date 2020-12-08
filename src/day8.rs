@@ -19,19 +19,19 @@ fn parse_to_vec(i: &str) -> Vec<Instruction> {
 		.collect::<Vec<_>>()
 }
 
-fn run_machine(instructions: &[Instruction], max: u8) -> (i32, isize) {
-	let mut run = vec![0u8; instructions.len()];
+fn run_machine(instructions: &[Instruction]) -> (i32, isize) {
+	let mut run = vec![false; instructions.len()];
 
 	let mut ip = 0isize;
 	let mut acc = 0i32;
 
 	loop {
 		// Exit if run twice
-		let run_n_times = run.get(ip as usize);
-		if run_n_times == None || run_n_times == Some(&max) {
+		let already_run = run.get(ip as usize);
+		if already_run == None || already_run == Some(&true) {
 			break;
 		}
-		run[ip as usize] += 1;
+		run[ip as usize] = true;
 
 		let curr = instructions.get(ip as usize);
 		match curr {
@@ -49,16 +49,16 @@ fn run_machine(instructions: &[Instruction], max: u8) -> (i32, isize) {
 	(acc, ip)
 }
 
-fn try_run_machine(instructions: &[Instruction], max: u8) -> (i32, bool) {
-	let (acc, ip) = run_machine(instructions, max);
+fn try_run_machine(instructions: &[Instruction]) -> (i32, bool) {
+	let (acc, ip) = run_machine(instructions);
 	(acc, ip == instructions.len() as isize)
 }
 
 fn main() {
-	let input = read_to_string("input/day8/1.txt").unwrap();
+	let input = read_to_string("input/day8/yunsar.txt").unwrap();
 	let instructions = parse_to_vec(&input);
 
-	let (part_1, _) = run_machine(&instructions, 1);
+	let (part_1, _) = run_machine(&instructions);
 
 	println!("Part 1: {}", part_1);
 
@@ -71,7 +71,7 @@ fn main() {
 			_ => continue,
 		}
 
-		let (acc, succ) = try_run_machine(&modified, 255);
+		let (acc, succ) = try_run_machine(&modified);
 		if succ {
 			final_acc = acc;
 			break;
