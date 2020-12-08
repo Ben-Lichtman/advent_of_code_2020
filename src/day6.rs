@@ -1,6 +1,6 @@
-use std::{collections::HashSet, fs::read_to_string};
+use std::fs::read_to_string;
 
-fn parse_input(file: &str) -> Vec<Vec<Vec<char>>> {
+fn parse_input(file: &str) -> Vec<Vec<u32>> {
 	let input = read_to_string(file).unwrap();
 
 	let processed = input
@@ -8,7 +8,11 @@ fn parse_input(file: &str) -> Vec<Vec<Vec<char>>> {
 		.map(|group| {
 			group
 				.lines()
-				.map(|person| person.chars().collect::<Vec<_>>())
+				.map(|person| {
+					person
+						.chars()
+						.fold(0u32, |acc, c| acc | (1 << (c as u32 - 'a' as u32)))
+				})
 				.collect::<Vec<_>>()
 		})
 		.collect::<Vec<_>>();
@@ -21,40 +25,24 @@ fn main() {
 
 	let groups_processed_1 = groups
 		.iter()
-		.map(|group| {
-			group
-				.iter()
-				.map(|person| person.iter().collect::<HashSet<_>>())
-				.fold(None, |acc, x| match acc {
-					None => Some(x),
-					Some(acc) => Some(&acc | &x),
-				})
-		})
+		.map(|group| group.iter().fold(0, |acc, x| acc | x))
 		.collect::<Vec<_>>();
 
 	let count_1 = groups_processed_1
 		.iter()
-		.map(|set| set.as_ref().unwrap().len())
+		.map(|set| set.count_ones() as usize)
 		.sum::<usize>();
 
 	println!("Part 1: {}", count_1);
 
 	let groups_processed_2 = groups
 		.iter()
-		.map(|group| {
-			group
-				.iter()
-				.map(|person| person.iter().collect::<HashSet<_>>())
-				.fold(None, |acc, x| match acc {
-					None => Some(x),
-					Some(acc) => Some(&acc & &x),
-				})
-		})
+		.map(|group| group.iter().fold(0x3ffffff, |acc, x| acc & x))
 		.collect::<Vec<_>>();
 
 	let count_2 = groups_processed_2
 		.iter()
-		.map(|set| set.as_ref().unwrap().len())
+		.map(|set| set.count_ones() as usize)
 		.sum::<usize>();
 
 	println!("Part 2: {}", count_2);
