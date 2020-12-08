@@ -4,7 +4,7 @@ use std::fs::read_to_string;
 enum Instruction {
 	Acc(i32),
 	Jmp(isize),
-	Nop(Option<isize>),
+	Nop(isize),
 }
 
 fn parse_to_vec(i: &str) -> Vec<Instruction> {
@@ -13,7 +13,7 @@ fn parse_to_vec(i: &str) -> Vec<Instruction> {
 		.map(|words| match words[0] {
 			"acc" => Instruction::Acc(words[1].parse().unwrap()),
 			"jmp" => Instruction::Jmp(words[1].parse().unwrap()),
-			"nop" => Instruction::Nop(words.get(1).map(|s| s.parse().unwrap())),
+			"nop" => Instruction::Nop(words[1].parse().unwrap()),
 			_ => panic!("Invalid instrucion"),
 		})
 		.collect::<Vec<_>>()
@@ -66,8 +66,8 @@ fn main() {
 	for test in 0..instructions.len() {
 		let mut modified = instructions.clone();
 		match modified[test] {
-			Instruction::Jmp(num) => modified[test] = Instruction::Nop(Some(num)),
-			Instruction::Nop(Some(num)) => modified[test] = Instruction::Jmp(num),
+			Instruction::Jmp(num) => modified[test] = Instruction::Nop(num),
+			Instruction::Nop(num) => modified[test] = Instruction::Jmp(num),
 			_ => continue,
 		}
 
