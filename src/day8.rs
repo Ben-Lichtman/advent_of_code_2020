@@ -55,7 +55,7 @@ fn try_run_machine(instructions: &[Instruction]) -> (i32, bool) {
 }
 
 fn main() {
-	let input = read_to_string("input/day8/yunsar.txt").unwrap();
+	let input = read_to_string("input/day8/1.txt").unwrap();
 	let instructions = parse_to_vec(&input);
 
 	let (part_1, _) = run_machine(&instructions);

@@ -181,10 +181,7 @@ fn parse_passport(i: &str) -> IResult<&str, Passport> {
 fn parse_input(file: &str) -> Vec<String> {
 	let input = read_to_string(file).unwrap();
 
-	let processed = input
-		.split("\n\n")
-		.map(|x| x.to_string())
-		.collect::<Vec<_>>();
+	let processed = input.split("\n\n").map(String::from).collect::<Vec<_>>();
 
 	processed
 }
