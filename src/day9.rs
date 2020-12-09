@@ -7,17 +7,16 @@ fn find_pair(nums_sorted: &[u64], target: u64) -> Option<(u64, u64)> {
 
 	loop {
 		let (num1, num2) = match current_slice {
-			[] => break,
+			[] => break None,
 			[val] => (*val, *val),
 			[v1, .., v2] => (*v1, *v2),
 		};
 		match num1 + num2 {
 			x if x > target => current_slice = &current_slice[..current_slice.len() - 1],
 			x if x < target => current_slice = &current_slice[1..],
-			_ => return Some((num1, num2)),
+			_ => break Some((num1, num2)),
 		}
 	}
-	None
 }
 
 fn scan_windows(input: &[u64], window_size: usize) -> Vec<(usize, u64)> {
