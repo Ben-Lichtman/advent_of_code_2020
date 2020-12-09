@@ -36,22 +36,23 @@ fn scan_windows(input: &[u64], window_size: usize) -> Vec<(usize, u64)> {
 		.collect::<Vec<_>>()
 }
 
-fn sum_until(slice: &[u64], target: u64) -> Option<usize> {
-	slice
-		.iter()
-		.enumerate()
-		.try_fold(target, |acc, (i, new)| {
-			if *new == acc {
-				Err(Some(i + 1))
-			}
-			else if *new > acc {
-				Err(None)
-			}
-			else {
-				Ok(acc - *new)
-			}
-		})
-		.unwrap_err()
+fn find_sum_subslice(slice: &[u64], target: u64) -> &[u64] {
+	let mut start = 0;
+	let mut end = 0;
+	let mut total = 0;
+	loop {
+		if total == target {
+			break &slice[start..end + 1];
+		}
+		else if total < target {
+			total += slice[end];
+			end += 1;
+		}
+		else if total > target {
+			total -= slice[start];
+			start += 1;
+		}
+	}
 }
 
 fn main() {
@@ -67,16 +68,12 @@ fn main() {
 
 	println!("Part 1: {}", part_1);
 
-	for start in 0..nums.len() {
-		let slice = &nums[start..];
-		if let Some(size) = sum_until(slice, part_1) {
-			let mut final_slice = slice[..size].to_vec();
-			final_slice.sort_unstable();
+	let subslice = find_sum_subslice(&nums, part_1);
 
-			if let [start, .., end] = final_slice[..] {
-				let sum = start + end;
-				println!("Part 2: {}", sum);
-			}
-		}
+	let mut subslice_sorted = subslice.to_vec();
+	subslice_sorted.sort_unstable();
+	if let [start, .., end] = subslice_sorted[..] {
+		let sum = start + end;
+		println!("Part 2: {}", sum);
 	}
 }
