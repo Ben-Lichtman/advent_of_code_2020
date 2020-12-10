@@ -72,7 +72,7 @@ fn main() {
 
 	let mut subslice_sorted = subslice.to_vec();
 	subslice_sorted.sort_unstable();
-	if let [start, .., end] = subslice_sorted[..] {
+	if let [start, .., end] = subslice_sorted.as_slice() {
 		let sum = start + end;
 		println!("Part 2: {}", sum);
 	}
