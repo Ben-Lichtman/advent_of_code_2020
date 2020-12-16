@@ -15,6 +15,7 @@ rand = "0.7.3"
 num = "0.3.1"
 nom = "6.0.1"
 petgraph = "0.5.1"
+csv = "1.1.5"
 
 [[bin]]
 name = "day1"
@@ -75,3 +76,7 @@ path = "src/day14.rs"
 [[bin]]
 name = "day15"
 path = "src/day15.rs"
+
+[[bin]]
+name = "day16"
+path = "src/day16.rs"
